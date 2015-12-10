@@ -76,7 +76,7 @@ static RSPrescreener *prescreener = nil;
 
 - (void)RSLog: (NSString *)message {
     if (logging) {
-        NSLog(@"RSNotifications: %@", message);
+        NSLog(@"RSPrescreener: %@", message);
     }
 }
 
@@ -102,6 +102,8 @@ static RSPrescreener *prescreener = nil;
 
 - (void)showSettingsMessage: (UIViewController *) localVC
 {
+    self.vc = localVC;
+    
     if ([self retrieveAsked] || !self.shouldPrescreen()) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle: settingsAlertTitle
                                                                                  message: settingsAlertBody
