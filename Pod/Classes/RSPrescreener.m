@@ -15,7 +15,7 @@
 @synthesize settingsAlertConfirm;
 
 @synthesize logging;
-@synthesize delaySeconds;
+@synthesize laterDelay;
 
 @synthesize vc;
 
@@ -41,7 +41,7 @@ static RSPrescreener *prescreener = nil;
         prescreener.settingsAlertConfirm = RS_SETTINGS_ALERT_CONFIRM;
         
         prescreener.logging = RS_LOGGING;
-        prescreener.laterDateDelaySeconds = RS_DELAY_SECONDS;
+        prescreener.laterDelay = RS_DELAY_SECONDS;
         
         prescreener.vc = nil;
         
@@ -83,6 +83,7 @@ static RSPrescreener *prescreener = nil;
 - (void)run {
     if (!self.shouldPrescreen()) {
         [self RSLog:@"shouldPrescreen has failed"];
+        return;
     }
     
     if ([self retrieveAsked]) {
@@ -95,13 +96,13 @@ static RSPrescreener *prescreener = nil;
 
 - (void)runWithVC: (UIViewController *) localVC
 {
-    self.vcs = localVC;
+    self.vc = localVC;
     [self run];
 }
 
-- (void)showSettingsMessage
+- (void)showSettingsMessage: (UIViewController *) localVC
 {
-    if ([self retrieveAsked] || !self.customValidation()) {
+    if ([self retrieveAsked] || !self.shouldPrescreen()) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle: settingsAlertTitle
                                                                                  message: settingsAlertBody
                                                                           preferredStyle:UIAlertControllerStyleAlert];
@@ -145,13 +146,8 @@ static RSPrescreener *prescreener = nil;
 */
 - (BOOL)primaryDialogConditionsMet
 {
-    if ([self isLessThanOS8] || [self retrieveNever] || [self retrieveAsked]) {
+    if ([self isLessThanOS8]/*remove*/ || [self retrieveNever] || [self retrieveAsked]) {
         [self RSLog:@"Do not show notification dialog"];
-        return false;
-    }
-    
-    if (!self.customValidation()){
-        [self RSLog:@"Failed customValidation"];
         return false;
     }
     
@@ -216,7 +212,7 @@ static RSPrescreener *prescreener = nil;
     never();
 }
 
-/* Example primaryCallback
+/* Example yes
 - (void)setNotificationSettings
 {
     [self RSLog:@"SHOWING APPLE NOTIFICATION"];
@@ -286,10 +282,10 @@ static RSPrescreener *prescreener = nil;
 
 - (NSDate *)timeIntervalFromNow
 {
-    return [[NSDate date] dateByAddingTimeInterval: laterDateDelaySeconds];
+    return [[NSDate date] dateByAddingTimeInterval: laterDelay];
 }
 
-- (BOOL)isLessThanOS8
+- (BOOL)isLessThanOS8//pull out
 {
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]) return false;
     

@@ -19,7 +19,6 @@
 #define RS_LOGGING false
 
 @interface RSPrescreener : NSObject {
-    //
     NSString *messageTitle;
     NSString *messageBody;
     NSString *messageLabelYes;
@@ -31,13 +30,13 @@
     NSString *settingsAlertConfirm;
     
     BOOL logging;
-    NSInteger laterDateDelaySeconds;
+    NSTimeInterval laterDelay;
 
     UIViewController *vc;
     BOOL (^shouldPrescreen)(void);
     void (^yes)(void);
     void (^later)(void);
-    void (^never)(void);å
+    void (^never)(void);
 }
 
 @property (nonatomic, strong) NSUserDefaults *userDefaults;
@@ -53,7 +52,7 @@
 @property (nonatomic, retain) NSString *settingsAlertConfirm;
 
 @property (nonatomic) BOOL logging;
-@property (nonatomic) NSInteger laterDateDelaySeconds;
+@property (nonatomic) NSTimeInterval laterDelay;
 
 @property (nonatomic, retain) UIViewController *vc;
 
@@ -71,7 +70,7 @@
 - (void)clearNever;
 - (void)clearLaterDate;
 
-- (void)showSettingsMessage;
+- (void)showSettingsMessage: (UIViewController *) localVC;
 - (void)storeLaterDate: (NSDate *) date;
 
 - (BOOL)retrieveAsked;
