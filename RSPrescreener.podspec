@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = "RSPrescreener"
   s.version          = "0.1.0"
-  s.summary          = "A short description of RSPrescreener."
+  s.summary          = "Prescreen some arbitrary apple dialog with arbitrary message based on arbitrary logic."
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?

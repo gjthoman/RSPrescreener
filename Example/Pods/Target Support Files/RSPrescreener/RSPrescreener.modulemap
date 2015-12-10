@@ -1,0 +1,6 @@
+framework module RSPrescreener {
+  umbrella header "RSPrescreener-umbrella.h"
+
+  export *
+  module * { export * }
+}
